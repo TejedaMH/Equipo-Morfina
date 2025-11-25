@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Corpluralidades</title>
+    <link rel="icon" type="ico" href="assets/img/favicon.ico">
 
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="script_colab.js"></script>
@@ -28,7 +29,14 @@
         <div class="demo-content">
             <h1>Espacio de colaboración</h1>
 
-            <!-- Subir foto -->
+            <!-- Subir texto -->
+             <div class="upload-text">
+                <textarea id="textInput" rows="6" placeholder="Escribe tu texto aquí..."></textarea>
+                <button id="saveBtn">Guardar Texto</button>
+                <div id="textGallery"></div>
+             </div>
+            
+             <!-- Subir foto -->
             <div class="upload-area">
                 <input type="file" id="photoInput" accept="image/*">
                 <button id="uploadBtn">Subir Foto</button>

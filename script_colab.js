@@ -234,6 +234,7 @@ const input = document.getElementById('photoInput');
 const uploadBtn = document.getElementById('uploadBtn');
 const gallery = document.getElementById('gallery');
 const previewContainer = document.getElementById('previewContainer');
+
 //Nombre de la tabla
 async function loadGallery() {
   const { data, error } = await supabase
@@ -337,4 +338,60 @@ lightbox.addEventListener("click", (e) => {
     }
 });
 
-//Supa fer
+// Supabase TEXTO 
+
+const SUPABASE_URL_TEXT = "https://imcpvcmxqquhhdfmkwyx.supabase.co"; 
+const SUPABASE_ANON_KEY_TEXT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImltY3B2Y214cXF1aGhkZm1rd3l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE5MTUwODQsImV4cCI6MjA3NzQ5MTA4NH0.RY94No2SGDTg44_W8iDIkQIFwb9q27LxP2W-XB_lWSM";
+
+const supabase_text = window.supabase.createClient(SUPABASE_URL_TEXT, SUPABASE_ANON_KEY_TEXT);
+
+const textInput = document.getElementById('textInput');
+const saveBtn = document.getElementById('saveBtn');
+const textGallery = document.getElementById('textGallery');
+
+// Cargar textos al inicio
+Cargartextos();
+
+async function Cargartextos() {
+  const { data, error } = await supabase_text
+    .from('Corplu_text')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error("Error al cargar textos:", error);
+    return;
+  }
+
+  textGallery.innerHTML = '';
+
+  data.forEach(item => {
+    const div = document.createElement('div');
+    div.className = "text-item";
+    div.textContent = item.text;
+    textGallery.appendChild(div);
+  });
+}
+
+saveBtn.addEventListener('click', async () => {
+  const text = textInput.value.trim();
+
+  if (!text) return alert("Escribe algo antes de guardar.");
+
+  saveBtn.disabled = true;
+  saveBtn.textContent = "Guardando...";
+
+  const { error } = await supabase_text
+    .from('Corplu_text')
+    .insert([{ text: text }]);
+
+  if (error) {
+    alert('Error al guardar el texto: ' + error.message);
+  } else {
+    textInput.value = '';
+    await loadTexts();
+  }
+
+  saveBtn.disabled = false;
+  saveBtn.textContent = "Guardar Texto";
+}); 
